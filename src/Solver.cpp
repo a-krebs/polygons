@@ -9,13 +9,29 @@ namespace polygons {
 int Solver::solve(Graph& g) const
 {
     int solutions = 0;
-    recurse(solutions, g.nodes(), 0);
+    recurse(solutions, g, 0);
     return solutions;
 }
 
 
-void Solver::recurse(int& solutions, std::vector<Node>& nodes, std::size_t index) const
+void Solver::recurse(int& solutions, Graph& g, std::size_t index) const
 {
+    if(index >= g.nodes().size())
+    {
+        if(meetsConstraints(g))
+        {
+            //std::cout << g << std::endl;
+            solutions++;
+        }
+        return;
+    }
+
+    Node& n = g.nodes().at(index);
+    for(const auto& color : n.permittedColors())
+    {
+        n.setColor(color);
+        recurse(solutions, g, index+1);
+    }
 }
 
 
