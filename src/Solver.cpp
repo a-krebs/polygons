@@ -9,14 +9,14 @@ namespace polygons {
 int Solver::solve(Graph& g) const
 {
     int solutions = 0;
-    recurse(solutions, g, 0);
+    recurse(solutions, g, g.beginNodes(), g.endNodes());
     return solutions;
 }
 
 
-void Solver::recurse(int& solutions, Graph& g, std::size_t index) const
+void Solver::recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
 {
-    if(index >= g.nodes().size())
+    if(it == end)
     {
         if(meetsConstraints(g))
         {
@@ -26,11 +26,12 @@ void Solver::recurse(int& solutions, Graph& g, std::size_t index) const
         return;
     }
 
-    Node& n = g.nodes().at(index);
+    Node& n = *it;
+    it++;
     for(const auto& color : n.permittedColors())
     {
         n.setColor(color);
-        recurse(solutions, g, index+1);
+        recurse(solutions, g, it, end);
     }
 }
 
@@ -45,9 +46,9 @@ bool Solver::meetsConstraints(const Graph& g) const
 {
     std::size_t complete_triangles = 0;
 
-    for(const auto& t : g.triangulation())
+    for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); cIt++)
     {
-        if(t.completeColoring())
+        if(cIt->completeColoring())
         {
             complete_triangles++;
         }

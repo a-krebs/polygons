@@ -15,7 +15,7 @@ class Solver
 public:
     int solve(Graph& g) const;
 
-    void recurse(int& solutions, Graph& g, std::size_t index) const;
+    void recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const;
 
 // constructors, etc.
 public:
