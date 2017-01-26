@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "Color.hpp"
 
@@ -19,14 +20,18 @@ public:
 
     Color color() const;
 
+    void setColor(const Color& color);
+
+    const std::vector<Color>& permittedColors() const;
+
 // constructors, etc.
 public:
-    Node(const std::string& label, const Color& permitted);
+    Node(const std::string& label, std::vector<Color>&& permitted);
 
 // data members
 private:
     std::string _label;
-    Color _permitted_colors;
+    std::vector<Color> _permitted_colors;
     Color _color;
 };
 

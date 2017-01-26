@@ -6,34 +6,34 @@ namespace polygons {
 namespace {
 
 
-static Color getExampleNodePermittedColors(const int& node)
+static std::vector<Color> getExampleNodePermittedColors(const int& node)
 {
     switch(node)
     {
         case 0:
-            return Color::RED;
+            return {Color::RED};
         case 1:
-            return Color::RED;
+            return {Color::RED};
         case 2:
-            return Color::YELLOW;
+            return {Color::YELLOW};
         case 3:
-            return Color::BLUE;
+            return {Color::BLUE};
         case 4:
-            return Color::BLUE;
+            return {Color::BLUE};
         case 8:
-            return Color::RED;
+            return {Color::RED};
         case 13:
-            return Color::YELLOW;
+            return {Color::YELLOW};
         case 18:
-            return Color::YELLOW;
+            return {Color::YELLOW};
         case 19:
-            return Color::RED;
+            return {Color::RED};
         case 20:
-            return Color::RED;
+            return {Color::RED};
         case 21:
-            return Color::BLUE;
+            return {Color::BLUE};
         default:
-            return Color::RED | Color::YELLOW | Color::BLUE;
+            return {Color::RED, Color::YELLOW, Color::BLUE};
     }
 }
 
@@ -89,8 +89,8 @@ std::shared_ptr<Graph> Graph::getExampleGraph()
     std::vector<Node> nodes;
     for(int i = 0; i < 22; ++i)
     {
-        Color permitted_colors = getExampleNodePermittedColors(i);
-        nodes.emplace_back(std::to_string(i), permitted_colors);
+        std::vector<Color> permitted_colors = getExampleNodePermittedColors(i);
+        nodes.emplace_back(std::to_string(i), std::move(permitted_colors));
     }
     std::shared_ptr<Graph> g = std::make_shared<Graph>("ExampleGraph", std::move(nodes));
     g->calculateTriangulation();

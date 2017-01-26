@@ -12,12 +12,24 @@ std::string Node::label() const
 
 Color Node::color() const
 {
-    // TODO sanity check that it's only a single color
     return _color;
 }
 
 
-Node::Node(const std::string& label, const Color& permitted)
+void Node::setColor(const Color& color)
+{
+    // TODO error check that it's only a single color
+    _color = color;
+}
+
+
+const std::vector<Color>& Node::permittedColors() const
+{
+    return _permitted_colors;
+}
+
+
+Node::Node(const std::string& label, std::vector<Color>&& permitted)
     : _label(label)
     , _permitted_colors(permitted)
     , _color(Color::NONE)
