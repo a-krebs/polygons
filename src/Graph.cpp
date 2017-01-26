@@ -104,13 +104,29 @@ std::string Graph::label() const
 }
 
 
-const std::vector<Triangle>& Graph::triangulation() const
+Graph::TriangleConstIterator Graph::cBeginTriangles() const
 {
     if(!_triangulated)
     {
         throw std::logic_error("Call calculateTriangulation() first.");
     }
-    return _triangulation;
+    return _triangulation.cbegin();
+}
+
+
+Graph::TriangleConstIterator Graph::cEndTriangles() const
+{
+    if(!_triangulated)
+    {
+        throw std::logic_error("Call calculateTriangulation() first.");
+    }
+    return _triangulation.cend();
+}
+
+
+std::size_t Graph::triangleCount() const
+{
+    return _triangulation.size();
 }
 
 
@@ -122,9 +138,21 @@ void Graph::calculateTriangulation()
 }
 
 
-std::vector<Node>& Graph::nodes()
+Graph::NodeIterator Graph::beginNodes()
 {
-    return _nodes;
+    return _nodes.begin();
+}
+
+
+Graph::NodeIterator Graph::endNodes()
+{
+    return _nodes.end();
+}
+
+
+std::size_t Graph::nodeCount() const
+{
+    return _nodes.size();
 }
 
 

@@ -16,6 +16,11 @@ namespace polygons {
  */
 class Graph
 {
+// types
+public:
+    using NodeIterator = std::vector<Node>::iterator;
+    using TriangleConstIterator = std::vector<Triangle>::const_iterator;
+
 // static functions
 public:
 
@@ -37,7 +42,10 @@ public:
      * 
      * \throws std::logic_error If calculateTriangulation() has not been called;
      */
-    const std::vector<Triangle>& triangulation() const;
+    TriangleConstIterator cBeginTriangles() const;
+    TriangleConstIterator cEndTriangles() const;
+
+    std::size_t triangleCount() const;
 
     /**
      * \brief Determine which nodes form triangles.
@@ -46,7 +54,10 @@ public:
      */
     void calculateTriangulation();
 
-    std::vector<Node>& nodes();
+    NodeIterator beginNodes();
+    NodeIterator endNodes();
+
+    std::size_t nodeCount() const;
 
 // constructors, etc.
 public:
