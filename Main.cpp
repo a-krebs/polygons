@@ -19,7 +19,7 @@ int main( int argc, char **argv )
             std::cout << g << std::endl;
         };
 
-    // find exactly solutions with exactly two complete triangles
+    // find solutions with exactly two complete triangles
     Solver s(2, callback);
 
     int solutions = s.solveRecursiveWithPruning(g);
