@@ -54,6 +54,7 @@ get_directory_property(SOURCEFILES DIRECTORY "src" DEFINITION "SOURCEFILES")
 get_directory_property(TESTSOURCEFILES DIRECTORY "src" DEFINITION "TESTSOURCEFILES")
 
 add_executable(${CMAKE_PROJECT_NAME} "Main.cpp" ${SOURCEFILES})
+add_dependencies(${CMAKE_PROJECT_NAME} "gtest") # for includes
 
 add_executable("tests" ${TESTSOURCEFILES} ${SOURCEFILES})
 target_link_libraries("tests" libgtest)
