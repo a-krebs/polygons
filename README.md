@@ -35,7 +35,8 @@ make
 The built binary will attempt to find all solutions to the above stated problem
 and print them to console.
 
-Refer to labels added to each dot and triangle in `example_annotated.png`.
+Refer to labels added to each dot and triangle in `example_annotated.png`. The
+white labels are for nodes, and the black labels for triangles.
 
 Example output:
 ```
