@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "Labeled.hpp"
 #include "Node.hpp"
 #include "Triangle.hpp"
 
@@ -16,10 +17,11 @@ namespace polygons {
 /**
  * \brief Graph that represents a triangulation of a polygon.
  */
-class Graph
+class Graph : public Labeled
 {
 // types
 public:
+
     using NodeIterator = std::vector<Node>::iterator;
     using TriangleConstIterator = std::vector<Triangle>::const_iterator;
 
@@ -27,38 +29,58 @@ public:
 public:
 
     /**
-     * \brief Construct graph given as example.
+     * \brief Construct graph given as the example polygon.
      *
      * Has 22 nodes.
+     *
+     * \returns a new Graph instance.
      */
-    static std::shared_ptr<Graph> getExampleGraph();
+    static Graph getExampleGraph();
 
 // public interface
 public:
-    std::string label() const;
 
     /**
-     * \brief The triangles that are formed by this graph.
+     * \brief Start iterator over the triangles that are formed by this graph.
      *
      * Call calculateTriangulation() first.
      * 
      * \throws std::logic_error If calculateTriangulation() has not been called;
      */
     TriangleConstIterator cBeginTriangles() const;
+
+    /**
+     * \brief End iterator over the triangles that are formed by this graph.
+     *
+     * Call calculateTriangulation() first.
+     *
+     * \throws std::logic_error If calculateTriangulation() has not been called;
+     */
     TriangleConstIterator cEndTriangles() const;
 
-    std::size_t triangleCount() const;
 
+    /**
+     * \returns The number of triangles adjacent to 'n'.
+     *
+     * \throws std::logic_error If calculateTriangulation() has not been called;
+     */
     std::size_t adjacentCompleteTriangleCount(const Node& n) const;
 
     /**
-     * \brief Determine which nodes form triangles.
+     * \brief Determine which nodes in this graph form triangles.
      *
-     * Currently only implemented for the example graph.
+     * \warning Only implemented for example graph.
      */
     void calculateTriangulation();
 
+    /**
+     * \brief Start iterator over the graph's nodes.
+     */
     NodeIterator beginNodes();
+
+    /**
+     * \brief End iterator over the graph's nodes.
+     */
     NodeIterator endNodes();
 
     std::size_t nodeCount() const;

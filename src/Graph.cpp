@@ -84,7 +84,7 @@ static std::vector<Triangle> getExampleGraphTriangulation(std::vector<Node>& nod
 } // end anonymous namespace
 
 
-std::shared_ptr<Graph> Graph::getExampleGraph()
+Graph Graph::getExampleGraph()
 {
     std::vector<Node> nodes;
     for(int i = 0; i < 22; ++i)
@@ -92,15 +92,9 @@ std::shared_ptr<Graph> Graph::getExampleGraph()
         std::vector<Color> permitted_colors = getExampleNodePermittedColors(i);
         nodes.emplace_back(std::to_string(i), std::move(permitted_colors));
     }
-    std::shared_ptr<Graph> g = std::make_shared<Graph>("ExampleGraph", std::move(nodes));
-    g->calculateTriangulation();
+    Graph g("ExampleGraph", std::move(nodes));
+    g.calculateTriangulation();
     return g;
-}
-
-
-std::string Graph::label() const
-{
-    return _label;
 }
 
 
@@ -124,14 +118,13 @@ Graph::TriangleConstIterator Graph::cEndTriangles() const
 }
 
 
-std::size_t Graph::triangleCount() const
-{
-    return _triangulation.size();
-}
-
-
 std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
 {
+    if(!_triangulated)
+    {
+        throw std::logic_error("Call calculateTriangulation() first.");
+    }
+
     std::size_t complete = 0;
     for(const Triangle* triangle : _adjacency.at(&n))
     {
@@ -146,6 +139,7 @@ std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
 
 void Graph::calculateTriangulation()
 {
+    // TODO implement for all graphs
     // TODO add safety check that this is the example graph
     _triangulation = std::move(getExampleGraphTriangulation(_nodes));
 
@@ -179,8 +173,8 @@ std::size_t Graph::nodeCount() const
 
 
 Graph::Graph(const std::string& label, std::vector<Node>&& nodes)
-    : _label( label )
-    , _nodes( nodes )
+    : Labeled(label)
+    , _nodes(nodes)
     , _triangulation()
     , _triangulated( false )
 {
