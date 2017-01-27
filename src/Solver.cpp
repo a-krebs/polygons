@@ -102,14 +102,14 @@ void Solver::recurseWithPruning(int& solutions, Graph& g, int& complete_triangle
         complete_triangles += new_complete;
         if(complete_triangles > _req_complete)
         {
+            // abort this search branch as constraints are already violated
             complete_triangles -= new_complete;
-            n.setColor(original);
             continue;
         }
         recurseWithPruning(solutions, g, complete_triangles, it, end);
-        n.setColor(original);
         complete_triangles -= new_complete;
     }
+    n.setColor(original);
 }
 
 
