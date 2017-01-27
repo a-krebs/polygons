@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+#include <memory>
 #include <string>
 
 #include "Labeled.hpp"
@@ -28,17 +30,23 @@ public:
      */
     bool completeColoring() const;
 
+    /**
+     * \return a triple containing the three vertice's labels in no specific order.
+     */
+    std::tuple<std::string, std::string, std::string> vertexLabels() const;
+
 // constructors, etc.
 public:
-    Triangle(const std::string& label, Node& n1, Node& n2, Node& n3);
+    // TODO docs
+    Triangle(const std::string& label, std::shared_ptr<const Node> n1, std::shared_ptr<const Node> n2, std::shared_ptr<const Node> n3);
 
 // data members
 private:
 
     // three vertices
-    Node& _n1;
-    Node& _n2;
-    Node& _n3;
+    std::shared_ptr<const Node> _n1;
+    std::shared_ptr<const Node> _n2;
+    std::shared_ptr<const Node> _n3;
 
     friend std::ostream& operator<<(std::ostream& s, const Triangle& t);
     friend class Graph; // for constructing the adjacency map
