@@ -36,7 +36,7 @@ public:
      *
      * \returns The number of solutions.
      */
-    int solveRecursive(Graph& g) const;
+    std::size_t solveRecursive(Graph& g) const;
 
     /**
      * \brief Find all solutions to the coloring of Graph g with the constraints.
@@ -51,7 +51,7 @@ public:
      *
      * \returns The number of solutions.
      */
-    int solveRecursiveWithPruning(Graph& g) const;
+    std::size_t solveRecursiveWithPruning(Graph& g) const;
 
     /**
      * \return true if the given graph meets the constraints.
@@ -82,7 +82,7 @@ private:
      * \param[in]  it         Iterator to the next node to which to apply a color.
      * \param[in]  end        Iterator past the last node to which to apply a color.
      */
-    void recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const;
+    void recurse(std::size_t& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const;
 
     /**
      * \brief Implementation of depth-first, pruning, backtracking search.
@@ -93,7 +93,7 @@ private:
      * \param[in]  it                 Iterator to the next node to which to apply a color.
      * \param[in]  end                Iterator past the last node to which to apply a color.
      */
-    void recurseWithPruning(int& solutions, Graph& g, int& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const;
+    void recurseWithPruning(std::size_t& solutions, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const;
 
 // data members
 private:

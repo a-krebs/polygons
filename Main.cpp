@@ -22,7 +22,7 @@ int main( int argc, char **argv )
     // find solutions with exactly two complete triangles
     Solver s(2, callback);
 
-    int solutions = s.solveRecursiveWithPruning(g);
+    std::size_t solutions = s.solveRecursiveWithPruning(g);
     std::cout << std::to_string(solutions) << " solutions found." << std::endl;
     return true;
 }

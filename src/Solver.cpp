@@ -6,18 +6,18 @@
 namespace polygons {
 
 
-int Solver::solveRecursive(Graph& g) const
+std::size_t Solver::solveRecursive(Graph& g) const
 {
-    int solutions = 0;
+    std::size_t solutions = 0;
     recurse(solutions, g, g.beginNodes(), g.endNodes());
     return solutions;
 }
 
 
-int Solver::solveRecursiveWithPruning(Graph& g) const
+std::size_t Solver::solveRecursiveWithPruning(Graph& g) const
 {
-    int solutions = 0;
-    int complete_triangles = 0;
+    std::size_t solutions = 0;
+    std::size_t complete_triangles = 0;
     recurseWithPruning(solutions, g, complete_triangles, g.beginNodes(), g.endNodes());
     return solutions;
 }
@@ -50,7 +50,7 @@ Solver::Solver(const std::size_t& req_complete, CallbackFunc callback)
 }
 
 
-void Solver::recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
+void Solver::recurse(std::size_t& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
 {
     if(it == end)
     {
@@ -75,7 +75,7 @@ void Solver::recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::No
 }
 
 
-void Solver::recurseWithPruning(int& solutions, Graph& g, int& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const
+void Solver::recurseWithPruning(std::size_t& solutions, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const
 {
     if(it == end)
     {
