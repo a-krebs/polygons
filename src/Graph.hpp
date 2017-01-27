@@ -23,7 +23,7 @@ class Graph : public Labeled
 public:
 
     /**
-     * Wrapper around std::vector<std::shared_ptr<Node>>::iterator _iter
+     * Wrapper around std::vector<std::shared_ptr<Node>>::iterator
      * that hides the shared_ptr<Node> as a implementation detail and
      * exposes only Node& type.
      */
@@ -91,7 +91,17 @@ public:
 
 // constructors, etc.
 public:
-    // TODO docs
+    
+    /**
+     * \brief Construct a new Graph instance.
+     *
+     * \param label         The graph's name.
+     * \param nodes         All nodes that are part of this graph. Must have unique labels.
+     * \param triangulation Triangle instances that enumerate all Triangles formed
+     *                      by the given Nodes. The Triangle instances must only
+     *                      refer to Nodes in from the 'nodes' parameter. Must
+     *                      have unique labels.
+     */
     Graph(const std::string& label, std::vector<std::shared_ptr<Node>>&& nodes, std::vector<Triangle>&& triangulation);
 
     ~Graph();
@@ -101,6 +111,7 @@ private:
     std::string _label;
     std::vector<std::shared_ptr<Node>> _nodes;
     std::vector<Triangle> _triangulation;
+    // possible performance improvements here, see README
     std::unordered_map<std::string, std::unordered_set<const Triangle*>> _adjacency;
     
     friend std::ostream& operator<<(std::ostream& s, const Graph& g);
