@@ -89,8 +89,6 @@ public:
      */
     NodeIterator endNodes();
 
-    std::size_t nodeCount() const;
-
 // constructors, etc.
 public:
     // TODO docs

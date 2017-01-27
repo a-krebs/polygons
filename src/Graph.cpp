@@ -161,12 +161,6 @@ Graph::NodeIterator Graph::endNodes()
 }
 
 
-std::size_t Graph::nodeCount() const
-{
-    return _nodes.size();
-}
-
-
 Graph::Graph(const std::string& label, std::vector<std::shared_ptr<Node>>&& nodes, std::vector<Triangle>&& triangulation)
     : Labeled(label)
     , _nodes(nodes)
