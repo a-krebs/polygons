@@ -45,6 +45,34 @@ Starting.
 0 solutions found.
 ```
 
+To run tests:
+```
+$ ./tests
+Running main() from gtest_main.cc
+[==========] Running 4 tests from 3 test cases.
+[----------] Global test environment set-up.
+[----------] 1 test from Graph
+[ RUN      ] Graph.Adjacency
+[       OK ] Graph.Adjacency (0 ms)
+[----------] 1 test from Graph (0 ms total)
+
+[----------] 1 test from Node
+[ RUN      ] Node.SetColor
+[       OK ] Node.SetColor (0 ms)
+[----------] 1 test from Node (0 ms total)
+
+[----------] 2 tests from Solver
+[ RUN      ] Solver.CompareAlgorithms
+[       OK ] Solver.CompareAlgorithms (305 ms)
+[ RUN      ] Solver.NonPruningColorings
+[       OK ] Solver.NonPruningColorings (122 ms)
+[----------] 2 tests from Solver (427 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 3 test cases ran. (427 ms total)
+[  PASSED  ] 4 tests.
+```
+
 
 # Solution Discussion
 
