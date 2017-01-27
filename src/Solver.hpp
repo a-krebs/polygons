@@ -46,7 +46,8 @@ public:
      *
      * This implementation is a recursive backtracking algorithm with early pruning.
      * It iteratively applies colors to each node (depth-first), and aborts search
-     * branches as soon as the graph violates the given constraints.
+     * branches as soon as the graph violates the given constraints (even if
+     * not all Nodes have a color yet).
      *
      * \returns The number of solutions.
      */
