@@ -4,6 +4,9 @@
 namespace polygons {
 
 
+const Color Triangle::COMPLETE_COLORS( Color::RED | Color::YELLOW | Color::BLUE );
+
+
 std::string Triangle::label() const
 {
     return _label;
@@ -12,8 +15,7 @@ std::string Triangle::label() const
 
 bool Triangle::completeColoring() const
 {
-    const Color all = Color::RED | Color::YELLOW | Color::BLUE;
-    return (_n1.color() | _n2.color() | _n3.color()) == all;
+    return (_n1.color() | _n2.color() | _n3.color()) == COMPLETE_COLORS;
 }
 
 
@@ -25,5 +27,14 @@ Triangle::Triangle(const std::string& label, Node& n1, Node& n2, Node& n3)
 {
 }
 
+
+std::ostream& operator<<(std::ostream& s, const Triangle& t)
+{
+    s << "Triangle " << t.label()
+      << "(" << t._n1.label() << ", "
+      << t._n2.label() << ", "
+      << t._n3.label() << ")";
+    return s;
+}
 
 } // namespace polygons

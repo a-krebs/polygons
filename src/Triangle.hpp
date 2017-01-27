@@ -15,6 +15,8 @@ class Triangle
 {
 // public interface
 public:
+    static const Color COMPLETE_COLORS;
+
     std::string label() const;
 
     bool completeColoring() const;
@@ -31,6 +33,9 @@ private:
     Node& _n1;
     Node& _n2;
     Node& _n3;
+
+    friend std::ostream& operator<<(std::ostream& s, const Triangle& t);
+    friend class Graph;
 };
 
 
