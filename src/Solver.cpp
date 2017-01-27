@@ -23,14 +23,6 @@ int Solver::solveRecursiveWithPruning(Graph& g) const
 }
 
 
-int Solver::solveRecursiveWithPruningB(Graph& g) const
-{
-    int solutions = 0;
-    recurseWithPruningB(solutions, g, g.beginNodes(), g.endNodes());
-    return solutions;
-}
-
-
 bool Solver::meetsConstraints(const Graph& g) const
 {
     std::size_t complete_triangles = 0;
@@ -117,46 +109,6 @@ void Solver::recurseWithPruning(int& solutions, Graph& g, int& complete_triangle
         recurseWithPruning(solutions, g, complete_triangles, it, end);
         n.setColor(original);
         complete_triangles -= new_complete;
-    }
-}
-
-
-void Solver::recurseWithPruningB(int& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
-{
-    if(it == end)
-    {
-        if(meetsConstraints(g))
-        {
-            solutions++;
-            if(_callback)
-            {
-                _callback(*this, g);
-            }
-        }
-        return;
-    }
-
-    Node& n = *it;
-    it++;
-    Color original = n.color();
-    for(const auto& color : n.permittedColors())
-    {
-        n.setColor(color);
-        std::size_t complete = 0;
-        for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); cIt++)
-        {
-            if(cIt->completeColoring())
-            {
-                complete++;
-            }
-        }
-        if(complete > _req_complete)
-        {
-            n.setColor(original);
-            continue;
-        }
-        recurseWithPruningB(solutions, g, it, end);
-        n.setColor(original);
     }
 }
 
