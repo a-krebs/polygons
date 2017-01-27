@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "Node.hpp"
@@ -47,6 +49,8 @@ public:
 
     std::size_t triangleCount() const;
 
+    std::size_t adjacentCompleteTriangleCount(const Node& n) const;
+
     /**
      * \brief Determine which nodes form triangles.
      *
@@ -70,6 +74,7 @@ private:
     std::string _label;
     std::vector<Node> _nodes;
     std::vector<Triangle> _triangulation;
+    std::map<const Node*, std::unordered_set<const Triangle*>> _adjacency;
     bool _triangulated;
     
     friend std::ostream& operator<<(std::ostream& s, const Graph& g);

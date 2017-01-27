@@ -130,10 +130,32 @@ std::size_t Graph::triangleCount() const
 }
 
 
+std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
+{
+    std::size_t complete = 0;
+    for(const Triangle* triangle : _adjacency.at(&n))
+    {
+        if(triangle->completeColoring())
+        {
+            complete++;
+        }
+    }
+    return complete;
+}
+
+
 void Graph::calculateTriangulation()
 {
     // TODO add safety check that this is the example graph
     _triangulation = std::move(getExampleGraphTriangulation(_nodes));
+
+    for(const auto& t : _triangulation)
+    {
+        _adjacency[&(t._n1)].insert(&t);
+        _adjacency[&(t._n2)].insert(&t);
+        _adjacency[&(t._n3)].insert(&t);
+    }
+
     _triangulated = true;
 }
 
@@ -167,6 +189,7 @@ Graph::Graph(const std::string& label, std::vector<Node>&& nodes)
 
 Graph::~Graph()
 {
+    _adjacency.clear();
     // clear _triangulation first, to avoid dangling references
     _triangulation.clear();
     _nodes.clear();
