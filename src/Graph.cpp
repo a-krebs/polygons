@@ -38,7 +38,7 @@ static std::vector<Color> getExampleNodePermittedColors(const int& node)
 }
 
 
-static std::vector<Triangle> getExampleGraphTriangulation(std::vector<Node>& nodes)
+static std::vector<Triangle> getExampleGraphTriangulation(const std::vector<std::shared_ptr<Node>>& nodes)
 {
     if(nodes.size() != 22)
     {
@@ -84,49 +84,61 @@ static std::vector<Triangle> getExampleGraphTriangulation(std::vector<Node>& nod
 } // end anonymous namespace
 
 
+Graph::NodeIterator& Graph::NodeIterator::operator++()
+{
+    _iter++;
+    return *this;
+}
+
+
+Node& Graph::NodeIterator::operator*()
+{
+    return *(*_iter);
+}
+
+
+bool Graph::NodeIterator::operator==(const NodeIterator& other)
+{
+    return _iter == other._iter;
+}
+
+
+Graph::NodeIterator::NodeIterator(const std::vector<std::shared_ptr<Node>>::iterator& iter)
+    : _iter(iter)
+{
+}
+
+
 Graph Graph::getExampleGraph()
 {
-    std::vector<Node> nodes;
+    std::vector<std::shared_ptr<Node>> nodes;
     for(int i = 0; i < 22; ++i)
     {
         std::vector<Color> permitted_colors = getExampleNodePermittedColors(i);
-        nodes.emplace_back(std::to_string(i), std::move(permitted_colors));
+        nodes.emplace_back(std::make_shared<Node>(std::to_string(i), std::move(permitted_colors)));
     }
-    Graph g("ExampleGraph", std::move(nodes));
-    g.calculateTriangulation();
+    auto triangulation = getExampleGraphTriangulation(nodes);
+    Graph g("ExampleGraph", std::move(nodes), std::move(triangulation));
     return g;
 }
 
 
 Graph::TriangleConstIterator Graph::cBeginTriangles() const
 {
-    if(!_triangulated)
-    {
-        throw std::logic_error("Call calculateTriangulation() first.");
-    }
     return _triangulation.cbegin();
 }
 
 
 Graph::TriangleConstIterator Graph::cEndTriangles() const
 {
-    if(!_triangulated)
-    {
-        throw std::logic_error("Call calculateTriangulation() first.");
-    }
     return _triangulation.cend();
 }
 
 
 std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
 {
-    if(!_triangulated)
-    {
-        throw std::logic_error("Call calculateTriangulation() first.");
-    }
-
     std::size_t complete = 0;
-    for(const Triangle* triangle : _adjacency.at(&n))
+    for(const Triangle* triangle : _adjacency.at(n.label()))
     {
         if(triangle->completeColoring())
         {
@@ -137,32 +149,15 @@ std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
 }
 
 
-void Graph::calculateTriangulation()
-{
-    // TODO implement for all graphs
-    // TODO add safety check that this is the example graph
-    _triangulation = std::move(getExampleGraphTriangulation(_nodes));
-
-    for(const auto& t : _triangulation)
-    {
-        _adjacency[&(t._n1)].insert(&t);
-        _adjacency[&(t._n2)].insert(&t);
-        _adjacency[&(t._n3)].insert(&t);
-    }
-
-    _triangulated = true;
-}
-
-
 Graph::NodeIterator Graph::beginNodes()
 {
-    return _nodes.begin();
+    return NodeIterator(_nodes.begin());
 }
 
 
 Graph::NodeIterator Graph::endNodes()
 {
-    return _nodes.end();
+    return NodeIterator(_nodes.end());
 }
 
 
@@ -172,12 +167,18 @@ std::size_t Graph::nodeCount() const
 }
 
 
-Graph::Graph(const std::string& label, std::vector<Node>&& nodes)
+Graph::Graph(const std::string& label, std::vector<std::shared_ptr<Node>>&& nodes, std::vector<Triangle>&& triangulation)
     : Labeled(label)
     , _nodes(nodes)
-    , _triangulation()
-    , _triangulated( false )
+    , _triangulation(triangulation)
 {
+    for(const auto& t : _triangulation)
+    {
+        const auto vertex_labels = t.vertexLabels();
+        _adjacency[std::get<0>(vertex_labels)].insert(&t);
+        _adjacency[std::get<1>(vertex_labels)].insert(&t);
+        _adjacency[std::get<2>(vertex_labels)].insert(&t);
+    }
 }
 
 
@@ -196,7 +197,7 @@ std::ostream& operator<<(std::ostream& s, const Graph& g)
       << "Node Colors:";
     for(const auto& n : g._nodes)
     {
-        s << "\n" << n.label() << ":\t" << n.color();
+        s << "\n" << n->label() << ":\t" << n->color();
     }
     s << "\nComplete Triangles:";
     for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); cIt++)

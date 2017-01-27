@@ -1,8 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include <map>
 #include <memory>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -22,7 +22,31 @@ class Graph : public Labeled
 // types
 public:
 
-    using NodeIterator = std::vector<Node>::iterator;
+    /**
+     * Wrapper around std::vector<std::shared_ptr<Node>>::iterator _iter
+     * that hides the shared_ptr<Node> as a implementation detail and
+     * exposes only Node& type.
+     */
+    class NodeIterator
+    {
+    // public interface
+    public:
+
+        NodeIterator& operator++(); // prefix
+
+        Node& operator*();
+
+        bool operator==(const NodeIterator& other);
+
+    // constructors, etc.
+    public:
+        NodeIterator(const std::vector<std::shared_ptr<Node>>::iterator& iter);
+
+    // data members:
+    private:
+        std::vector<std::shared_ptr<Node>>::iterator _iter;
+    };
+
     using TriangleConstIterator = std::vector<Triangle>::const_iterator;
 
 // static functions
@@ -42,36 +66,18 @@ public:
 
     /**
      * \brief Start iterator over the triangles that are formed by this graph.
-     *
-     * Call calculateTriangulation() first.
-     * 
-     * \throws std::logic_error If calculateTriangulation() has not been called;
      */
     TriangleConstIterator cBeginTriangles() const;
 
     /**
      * \brief End iterator over the triangles that are formed by this graph.
-     *
-     * Call calculateTriangulation() first.
-     *
-     * \throws std::logic_error If calculateTriangulation() has not been called;
      */
     TriangleConstIterator cEndTriangles() const;
 
-
     /**
-     * \returns The number of triangles adjacent to 'n'.
-     *
-     * \throws std::logic_error If calculateTriangulation() has not been called;
+     * \returns The number of completely colored triangles adjacent to 'n'.
      */
     std::size_t adjacentCompleteTriangleCount(const Node& n) const;
-
-    /**
-     * \brief Determine which nodes in this graph form triangles.
-     *
-     * \warning Only implemented for example graph.
-     */
-    void calculateTriangulation();
 
     /**
      * \brief Start iterator over the graph's nodes.
@@ -87,17 +93,17 @@ public:
 
 // constructors, etc.
 public:
-    Graph(const std::string& label, std::vector<Node>&& nodes);
+    // TODO docs
+    Graph(const std::string& label, std::vector<std::shared_ptr<Node>>&& nodes, std::vector<Triangle>&& triangulation);
 
     ~Graph();
 
 // data members:
 private:
     std::string _label;
-    std::vector<Node> _nodes;
+    std::vector<std::shared_ptr<Node>> _nodes;
     std::vector<Triangle> _triangulation;
-    std::map<const Node*, std::unordered_set<const Triangle*>> _adjacency;
-    bool _triangulated;
+    std::unordered_map<std::string, std::unordered_set<const Triangle*>> _adjacency;
     
     friend std::ostream& operator<<(std::ostream& s, const Graph& g);
 };
