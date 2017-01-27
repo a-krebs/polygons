@@ -9,7 +9,8 @@ namespace polygons {
 std::size_t Solver::solveRecursive(Graph& g) const
 {
     std::size_t solutions = 0;
-    recurse(solutions, g, g.beginNodes(), g.endNodes());
+    std::size_t attempts = 0;
+    recurse(solutions, attempts, g, g.beginNodes(), g.endNodes());
     return solutions;
 }
 
@@ -17,8 +18,9 @@ std::size_t Solver::solveRecursive(Graph& g) const
 std::size_t Solver::solveRecursiveWithPruning(Graph& g) const
 {
     std::size_t solutions = 0;
+    std::size_t attempts = 0;
     std::size_t complete_triangles = 0;
-    recurseWithPruning(solutions, g, complete_triangles, g.beginNodes(), g.endNodes());
+    recurseWithPruning(solutions, attempts, g, complete_triangles, g.beginNodes(), g.endNodes());
     return solutions;
 }
 
@@ -50,10 +52,11 @@ Solver::Solver(const std::size_t& req_complete, CallbackFunc callback)
 }
 
 
-void Solver::recurse(std::size_t& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
+void Solver::recurse(std::size_t& solutions, std::size_t& attempts, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const
 {
     if(it == end)
     {
+        attempts++;
         if(meetsConstraints(g))
         {
             solutions++;
@@ -70,15 +73,16 @@ void Solver::recurse(std::size_t& solutions, Graph& g, Graph::NodeIterator it, G
     for(const auto& color : n.permittedColors())
     {
         n.setColor(color);
-        recurse(solutions, g, it, end);
+        recurse(solutions, attempts, g, it, end);
     }
 }
 
 
-void Solver::recurseWithPruning(std::size_t& solutions, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const
+void Solver::recurseWithPruning(std::size_t& solutions, std::size_t& attempts, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const
 {
     if(it == end)
     {
+        attempts++;
         if(meetsConstraints(g))
         {
             solutions++;
@@ -106,7 +110,7 @@ void Solver::recurseWithPruning(std::size_t& solutions, Graph& g, std::size_t& c
             complete_triangles -= new_complete;
             continue;
         }
-        recurseWithPruning(solutions, g, complete_triangles, it, end);
+        recurseWithPruning(solutions, attempts, g, complete_triangles, it, end);
         complete_triangles -= new_complete;
     }
     n.setColor(original);

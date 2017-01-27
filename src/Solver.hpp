@@ -78,22 +78,24 @@ private:
      * \brief Implementation of depth-first, non-pruning, backtracking search.
      *
      * \param[out] solutions  Set to the number of solutions found.
+     * \param[out] attempts   Set to the number of possible graph colorings tried.
      * \param[in]  g          The graph to solve (will be modified).
      * \param[in]  it         Iterator to the next node to which to apply a color.
      * \param[in]  end        Iterator past the last node to which to apply a color.
      */
-    void recurse(std::size_t& solutions, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const;
+    void recurse(std::size_t& solutions, std::size_t& attempts, Graph& g, Graph::NodeIterator it, Graph::NodeIterator end) const;
 
     /**
      * \brief Implementation of depth-first, pruning, backtracking search.
      *
      * \param[out] solutions          Set to the number of solutions found.
+     * \param[out] attempts           Set to the number of possible graph colorings tried.
      * \param[in]  g                  The graph to solve (will be modified).
      * \param[out] complete_triangles Number of complete_triangles found so far. Will be updated.
      * \param[in]  it                 Iterator to the next node to which to apply a color.
      * \param[in]  end                Iterator past the last node to which to apply a color.
      */
-    void recurseWithPruning(std::size_t& solutions, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const;
+    void recurseWithPruning(std::size_t& solutions, std::size_t& attempts, Graph& g, std::size_t& complete_triangles, Graph::NodeIterator it, Graph::NodeIterator end) const;
 
 // data members
 private:
