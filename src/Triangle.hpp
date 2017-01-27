@@ -13,6 +13,8 @@ namespace polygons {
 
 /**
  * \brief A single triangle in a triangulation of a polygon.
+ *
+ * Has three Nodes that are part of a larger Graph.
  */
 class Triangle : public Labeled
 {
@@ -31,13 +33,23 @@ public:
     bool completeColoring() const;
 
     /**
-     * \return a triple containing the three vertice's labels in no specific order.
+     * \return a triple containing the label of each vertex (in no specific order).
      */
     std::tuple<std::string, std::string, std::string> vertexLabels() const;
 
 // constructors, etc.
 public:
-    // TODO docs
+
+    /**
+     * \brief Construct a new Triangle.
+     *
+     * All given vertices must be part of the same Graph.
+     *
+     * \param label The graph's name.
+     * \param n1    Vertex of this Triange.
+     * \param n2    Vertex of this Triange.
+     * \param n3    Vertex of this Triange.
+     */
     Triangle(const std::string& label, std::shared_ptr<const Node> n1, std::shared_ptr<const Node> n2, std::shared_ptr<const Node> n3);
 
 // data members
@@ -49,7 +61,6 @@ private:
     std::shared_ptr<const Node> _n3;
 
     friend std::ostream& operator<<(std::ostream& s, const Triangle& t);
-    friend class Graph; // for constructing the adjacency map
 };
 
 
