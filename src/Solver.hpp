@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <functional>
 #include <memory>
+#include "gtest/gtest.h"
 
 #include "Graph.hpp"
 
@@ -101,6 +102,8 @@ private:
 private:
     std::size_t _req_complete;
     CallbackFunc _callback;
+
+    FRIEND_TEST(Solver, NonPruningColorings);
 };
 
 

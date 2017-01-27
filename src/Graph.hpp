@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include "gtest/gtest.h"
 
 #include "Labeled.hpp"
 #include "Node.hpp"
@@ -115,6 +116,8 @@ private:
     std::unordered_map<std::string, std::unordered_set<const Triangle*>> _adjacency;
     
     friend std::ostream& operator<<(std::ostream& s, const Graph& g);
+
+    FRIEND_TEST(Graph, Adjacency);
 };
 
 
