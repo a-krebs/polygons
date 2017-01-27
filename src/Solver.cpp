@@ -27,7 +27,7 @@ bool Solver::meetsConstraints(const Graph& g) const
 {
     std::size_t complete_triangles = 0;
 
-    for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); cIt++)
+    for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); ++cIt)
     {
         if(cIt->completeColoring())
         {
@@ -66,7 +66,7 @@ void Solver::recurse(int& solutions, Graph& g, Graph::NodeIterator it, Graph::No
     }
 
     Node& n = *it;
-    it++;
+    ++it;
     for(const auto& color : n.permittedColors())
     {
         n.setColor(color);
@@ -91,7 +91,7 @@ void Solver::recurseWithPruning(int& solutions, Graph& g, int& complete_triangle
     }
 
     Node& n = *it;
-    it++;
+    ++it;
     Color original = n.color();
     for(const auto& color : n.permittedColors())
     {
