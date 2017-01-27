@@ -52,7 +52,7 @@ public:
 // data members
 private:
     std::vector<Color> _permitted_colors;
-    Color _permitted_color_mask;
+    Color _permitted_color_mask; // generated from _permitted_colors in c'tor
     Color _color;
 };
 
