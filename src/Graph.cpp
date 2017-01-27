@@ -181,6 +181,14 @@ std::ostream& operator<<(std::ostream& s, const Graph& g)
     {
         s << "\n" << n.label() << ":\t" << n.color();
     }
+    s << "\nComplete Triangles:";
+    for(auto cIt = g.cBeginTriangles(); cIt != g.cEndTriangles(); cIt++)
+    {
+        if(cIt->completeColoring())
+        {
+            s << "\n" << *cIt;
+        }
+    }
     return s;
 }
 
