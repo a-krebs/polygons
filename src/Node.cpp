@@ -4,12 +4,6 @@
 namespace polygons {
 
 
-std::string Node::label() const
-{
-    return _label;
-}
-
-
 Color Node::color() const
 {
     return _color;
@@ -19,6 +13,10 @@ Color Node::color() const
 void Node::setColor(const Color& color)
 {
     // TODO error check that it's only a single color
+    if((color | _permitted_color_mask) != _permitted_color_mask)
+    {
+        throw std::runtime_error("Not a permitted color for this node.");
+    }
     _color = color;
 }
 
@@ -30,10 +28,15 @@ const std::vector<Color>& Node::permittedColors() const
 
 
 Node::Node(const std::string& label, std::vector<Color>&& permitted)
-    : _label(label)
+    : Labeled(label)
     , _permitted_colors(permitted)
+    , _permitted_color_mask(Color::NONE)
     , _color(Color::NONE)
 {
+    for(const auto& color : _permitted_colors)
+    {
+        _permitted_color_mask = _permitted_color_mask | color;
+    }
 }
 
 

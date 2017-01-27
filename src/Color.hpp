@@ -26,6 +26,13 @@ inline Color operator|(const Color& lhs, const Color& rhs)
 }
 
 
+inline Color operator&(const Color& lhs, const Color& rhs)
+{
+    using T = std::underlying_type<Color>::type;
+    return Color(static_cast<T>(lhs) & static_cast<T>(rhs));
+}
+
+
 inline std::ostream& operator<<(std::ostream& s, const Color& c)
 {
     switch(c)

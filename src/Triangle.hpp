@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Labeled.hpp"
 #include "Node.hpp"
 
 
@@ -11,14 +12,20 @@ namespace polygons {
 /**
  * \brief A single triangle in a triangulation of a polygon.
  */
-class Triangle
+class Triangle : public Labeled
 {
-// public interface
+// types, constants
 public:
+
+    //! \brief RED, BLUE, and YELLOW
     static const Color COMPLETE_COLORS;
 
-    std::string label() const;
+// public interface
+public:
 
+    /**
+     * \return True if this Triangle has one vertex of each color.
+     */
     bool completeColoring() const;
 
 // constructors, etc.
@@ -27,7 +34,6 @@ public:
 
 // data members
 private:
-    std::string _label;
 
     // three vertices
     Node& _n1;
@@ -35,7 +41,7 @@ private:
     Node& _n3;
 
     friend std::ostream& operator<<(std::ostream& s, const Triangle& t);
-    friend class Graph;
+    friend class Graph; // for constructing the adjacency map
 };
 
 
