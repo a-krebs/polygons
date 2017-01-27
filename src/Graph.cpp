@@ -137,8 +137,13 @@ Graph::TriangleConstIterator Graph::cEndTriangles() const
 
 std::size_t Graph::adjacentCompleteTriangleCount(const Node& n) const
 {
+    // TODO improve performance here
+    // Making Nodes aware of their index into the _nodes vector would allow
+    // adjacency lookup by that index, rather than by hashmap.
+
     std::size_t complete = 0;
-    for(const Triangle* triangle : _adjacency.at(n.label()))
+    const auto& triangles = _adjacency.at(n.label());
+    for(const Triangle* triangle : triangles)
     {
         if(triangle->completeColoring())
         {
