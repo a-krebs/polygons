@@ -4,7 +4,7 @@
 namespace polygons {
 
 
-std::string Labeled::label() const
+const std::string& Labeled::label() const
 {
     return _label;
 }

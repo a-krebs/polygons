@@ -4,7 +4,7 @@
 namespace polygons {
 
 
-Color Node::color() const
+const Color& Node::color() const
 {
     return _color;
 }

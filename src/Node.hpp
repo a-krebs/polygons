@@ -20,8 +20,9 @@ public:
 
     /**
      * \return the color of this Node.
+     * \warning Returns a reference, be sure to copy correctly as needed.
      */
-    Color color() const;
+    const Color& color() const;
 
     /**
      * \brief Set the color.

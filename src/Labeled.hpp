@@ -16,8 +16,9 @@ public:
 
     /**
      * \return The label of this instance.
+     * \warning Returns a reference, be sure to copy correctly as needed.
      */
-    std::string label() const;
+    const std::string& label() const;
 
 // constructors, etc.
 public:
