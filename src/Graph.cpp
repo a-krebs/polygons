@@ -45,6 +45,7 @@ static std::vector<Triangle> getExampleGraphTriangulation(const std::vector<std:
         throw std::runtime_error("Expected 22 nodes in example graph.");
     }
 
+    // All triangles from the example. See README.
     std::vector<Triangle> triangulation;
     triangulation.emplace_back( "0", nodes[17], nodes[18], nodes[21]);
     triangulation.emplace_back( "1", nodes[0],  nodes[4],  nodes[5]);
@@ -183,8 +184,8 @@ Graph::Graph(const std::string& label, std::vector<std::shared_ptr<Node>>&& node
 
 Graph::~Graph()
 {
+    // clear _adjacency first, to avoid dangling pointers
     _adjacency.clear();
-    // clear _triangulation first, to avoid dangling references
     _triangulation.clear();
     _nodes.clear();
 }
